@@ -10,8 +10,8 @@ jobs:
   print_world:
     docker:
       - image: circleci/node:13.8.0
-      steps:
-        - run: echo "World"
+    steps:
+      - run: echo "World"
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
