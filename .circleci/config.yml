@@ -25,6 +25,20 @@ jobs:
       - checkout
       - run: cd ./backend && npm i && npm run build
 
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: cd ./frontend && npm run test && npm run test:e2e && npm run test:cov
+
+  test-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: cd ./backend && npm run test && npm run test:e2e && npm run test:cov
+
 
 workflows:
   default:
