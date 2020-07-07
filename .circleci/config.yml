@@ -16,7 +16,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd frontend
+      - run: cd ./frontend
       - run: echo "Hello guys"
       - run: ls
       - run: npm i
