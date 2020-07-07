@@ -34,26 +34,35 @@ jobs:
       - checkout
       - run:
           name: Frontend Test
-          commant: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+          command: | 
+            cd ./frontend && npm i
+            npm install --save-dev jest-junit
+            npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+              JEST_JUNIT_OUTPUT_DIR: ./frontend/reports/junit/
       - store_test_results:
           path: ./frontend/reports/junit/
       - store_artifacts:
           path: ./frontend/reports/junit
-    environment:
-      JEST_JUNIT_OUTPUT_DIR: ./frontend/reports/junit/
+    
 
   test-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+      - run: 
+          name: Backend Test
+          command: |
+            cd ./backend && npm i
+            npm install --save-dev jest-junit
+            npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+              JEST_JUNIT_OUTPUT_DIR: ./frontend/reports/junit/
       - store_test_results:
           path: ./backend/reports/junit/
       - store_artifacts:
           path: ./backend/reports/junit
-    environment:
-      JEST_JUNIT_OUTPUT_DIR: ./backend/reports/junit/
 
 workflows:
   default:
