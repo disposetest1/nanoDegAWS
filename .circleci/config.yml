@@ -32,21 +32,26 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test 
+      - run: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+        environment:
+          JEST_JUNIT_OUTPUT_DIR: ./backend/reports/junit/
+      - store_test_results:
+          path: ./backend/reports/junit/
+      - store_artifacts:
+          path: ./backend/reports/junit
 
   test-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run test
-
-reports:
-  jest_reports:
-    files:
-      - "report.xml"
-    file-format: JunitXml
-    base-directory: ./
+      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./backend/reports/junit/
+      - store_test_results:
+          path: ./backend/reports/junit/
+      - store_artifacts:
+          path: ./backend/reports/junit
 
 workflows:
   default:
