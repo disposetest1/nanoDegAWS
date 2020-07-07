@@ -17,14 +17,14 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend && npm i && npm install --save-dev jest-junit && npm run build 
+      - run: cd ./frontend && npm i && npm run build 
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run build
+      - run: cd ./backend && npm i && npm run build
 
   #test phase
   test-frontend:
@@ -32,14 +32,14 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend && npm run test && npm run test:e2e && npm run test:cov
+      - run: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test 
 
   test-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./backend && npm run test && npm run test:e2e && npm run test:cov
+      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run test
 
 reports:
   jest_reports:
