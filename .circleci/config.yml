@@ -16,21 +16,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend
-      - run: echo "Hello guys"
-      - run: ls
-      - run: npm i
-      - run: npm run build
+      - run: cd ./frontend && npm i && npm run build 
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd backend
-      - run: npm login
-      - run: npm i
-      - run: npm start
+      - run: cd backend && npm login && npm start
+
 
 workflows:
   default:
