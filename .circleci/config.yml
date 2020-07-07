@@ -46,7 +46,7 @@ jobs:
     steps:
       - checkout
       - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
-          environment:
+      - environment:
              JEST_JUNIT_OUTPUT_DIR: ./backend/reports/junit/
       - store_test_results:
           path: ./backend/reports/junit/
