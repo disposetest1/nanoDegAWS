@@ -19,7 +19,7 @@ jobs:
       - run: ls
       - run: npm i
       - run: npm run build
-    base-directory: /frontend
+    working_directory: /frontend
 
   build-backend:
     docker:
