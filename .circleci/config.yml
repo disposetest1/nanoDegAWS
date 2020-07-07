@@ -36,6 +36,6 @@ workflows:
     jobs:
       - hello-world
       - build-frontend
-      - build-backend
+      - build-backend:
           requires: 
             - build-frontend 
