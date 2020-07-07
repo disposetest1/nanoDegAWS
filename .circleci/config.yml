@@ -32,8 +32,10 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
-      - environment:
+      - run:
+          name: Frontend Test
+          commant: cd ./frontend && npm i && npm install --save-dev jest-junit  && npm run test --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
             JEST_JUNIT_OUTPUT_DIR: ./frontend/reports/junit/
       - store_test_results:
           path: ./frontend/reports/junit/
