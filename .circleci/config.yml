@@ -11,20 +11,22 @@ jobs:
           command: |
             echo "Hello World"
 
+  #build phase
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./frontend && npm i && npm run build 
+      - run: cd ./frontend && npm i && npm install --save-dev jest-junit && npm run build 
 
   build-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd ./backend && npm i && npm run build
+      - run: cd ./backend && npm i && npm install --save-dev jest-junit && npm run build
 
+  #test phase
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -39,12 +41,26 @@ jobs:
       - checkout
       - run: cd ./backend && npm run test && npm run test:e2e && npm run test:cov
 
+reports:
+  jest_reports:
+    files:
+      - "report.xml"
+    file-format: JunitXml
+    base-directory: ./
 
 workflows:
   default:
     jobs:
       - hello-world
       - build-frontend
-      - build-backend:
-          requires: 
-            - build-frontend 
+      - build-backend
+      - test-frontend
+          requires:
+            - build-frontend
+            - build-backend
+      - test-backend
+          requires:
+            - build-frontend
+            - build-backend
+
+            
