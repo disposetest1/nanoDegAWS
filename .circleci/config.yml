@@ -16,10 +16,10 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd frontend
-      - run: ls
+      #- run: cd frontend
       - run: npm i
       - run: npm run build
+      base-directory: /frontend
 
   build-backend:
     docker:
