@@ -18,7 +18,6 @@ jobs:
       - checkout
       - run: cd frontend
       - run: npm i
-      - run: npm start
       - run: npm run build
 
   build-backend:
