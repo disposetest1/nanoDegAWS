@@ -23,7 +23,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: cd backend && npm login && npm start
+      - run: cd backend && npm login && npm run lint
 
 
 workflows:
