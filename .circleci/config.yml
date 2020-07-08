@@ -38,7 +38,7 @@ jobs:
             cd ./frontend && npm i
             npm install --save-dev jest-junit
             JEST_JUNIT_OUTPUT_DIR="./test-results/jest/"
-            npm run test --reporters=jest-junit
+            npm run jest --ci --reporters=jest-junit
           environment:
               JEST_JUNIT_OUTPUT_DIR: ./frontend/test-results/jest/
       - store_test_results:
@@ -60,7 +60,7 @@ jobs:
             cd ./backend && npm i
             npm install --save-dev jest-junit
             JEST_JUNIT_OUTPUT_DIR="./test-results/jest/"
-            npm run test --reporters=jest-junit
+            npm run jest --ci --reporters=jest-junit
           
       - store_test_results:
           path: ./backend/test-results/jest/
