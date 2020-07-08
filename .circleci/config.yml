@@ -71,7 +71,9 @@ workflows:
   default:
     jobs:
       - hello-world
-      - build-frontend
+      - build-frontend:
+          requires:
+            - hello-world
       - build-backend:
           requires:
             - build-frontend
