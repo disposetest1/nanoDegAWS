@@ -39,7 +39,7 @@ jobs:
             npm install --save-dev jest-junit
             npm run test --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
-              JEST_JUNIT_OUTPUT_DIR: ./frontend/test-results/jest/
+              JEST_JUNIT_OUTPUT_DIR: ./test-results/jest/
       - store_test_results:
           path: ./frontend/test-results/jest/
       - store_artifacts:
@@ -58,7 +58,7 @@ jobs:
             npm install --save-dev jest-junit
             npm run test --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
-              JEST_JUNIT_OUTPUT_DIR: ./frontend/test-results/jest/
+              JEST_JUNIT_OUTPUT_DIR: ./test-results/jest/
       - store_test_results:
           path: ./backend/test-results/jest/
       - store_artifacts:
