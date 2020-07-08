@@ -39,11 +39,11 @@ jobs:
             npm install --save-dev jest-junit
             npm run test --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
-              JEST_JUNIT_OUTPUT_DIR: ./test-results/jest/
+              JEST_JUNIT_OUTPUT_DIR: ./frontend/test-results/jest/
       - store_test_results:
-          path: ./test-results/jest/
+          path: ./frontend/test-results/jest/
       - store_artifacts:
-          path: ./test-results/jest/
+          path: ./frontend/test-results/jest/
     
 
   test-backend:
@@ -52,13 +52,14 @@ jobs:
     steps:
       - checkout
       - run: 
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./backend/test-results/jest/
           name: Backend Test
           command: |
             cd ./backend && npm i
             npm install --save-dev jest-junit
             npm run test --ci --runInBand --reporters=default --reporters=jest-junit
-          environment:
-              JEST_JUNIT_OUTPUT_DIR: ./test-results/jest/
+          
       - store_test_results:
           path: ./backend/test-results/jest/
       - store_artifacts:
