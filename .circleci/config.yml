@@ -89,6 +89,51 @@ jobs:
             cd ./backend && npm i
             npm audit fix --audit-level=critical --force
 
+  #Infrastructure creation
+  network-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure network infrastructure exist
+          command: |
+            cd ./files
+            aws cloudformation deploy --template-file network.yml --stack-name nanoDegNetworkStack
+            
+  cloudfront-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure cloudfront infrastructure exist
+          command: |
+            cd ./files
+            aws cloudformation deploy --template-file cloudfront.yml --stack-name nanoDegCloudfrontStack
+
+  backend-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure backend infrastructure exist
+          command: |
+            cd ./files
+            aws cloudformation deploy --template-file backend.yml --stack-name nanoDegBackendStack
+
+  frontend-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure frontend infrastructure exist
+          command: |
+            cd ./files
+            aws cloudformation deploy --template-file frontend.yml --stack-name nanoDegFrontendStack
+
 workflows:
   default:
     jobs:
@@ -111,5 +156,17 @@ workflows:
       - backend-security:
           requires:
             - frontend-security
+      - network-infrastructure:
+          requires:
+            - backend-security
+      - cloudfront-infrastructure:
+          requires:
+            - network-infrastructure
+      - backend-infrastructure:
+          requires:
+            - cloudfront-infrastructure
+      - frontend-infrastructure:
+          requires:
+            - backend-infrastructure
 
             
