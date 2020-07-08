@@ -87,7 +87,7 @@ jobs:
           name: Backend Security Test
           command: |
             cd ./backend && npm i
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
 
 workflows:
   default:
