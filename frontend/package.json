@@ -44,8 +44,6 @@
     "html-loader": "^1.0.0-alpha.0",
     "html-webpack-plugin": "^4.0.0-beta.4",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.8.0",
-    "jest-junit": "^11.0.1",
     "mini-css-extract-plugin": "^0.7.0",
     "postcss": "^7.0.17",
     "postcss-browser-reporter": "^0.6.0",
@@ -120,7 +118,6 @@
       "!<rootDir>/app/components/(Error|Callback)/*",
       "!<rootDir>/app/services/(httpService).ts"
     ],
-    "testResultsProcessor": "jest-junit",
     "moduleFileExtensions": [
       "ts",
       "tsx",

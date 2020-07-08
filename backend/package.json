@@ -95,7 +95,6 @@
       "json",
       "ts"
     ],
-    "testResultsProcessor": "jest-junit",
     "testMatch": [
       "**/*.spec.ts"
     ],
