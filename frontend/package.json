@@ -120,6 +120,7 @@
       "!<rootDir>/app/components/(Error|Callback)/*",
       "!<rootDir>/app/services/(httpService).ts"
     ],
+    "testResultsProcessor": "jest-junit",
     "moduleFileExtensions": [
       "ts",
       "tsx",
