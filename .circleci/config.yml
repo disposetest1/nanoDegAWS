@@ -99,7 +99,7 @@ jobs:
           name: Ensure network infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack
+            aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack --region us-west-2
             
   cloudfront-infrastructure:
     docker:
@@ -110,7 +110,7 @@ jobs:
           name: Ensure cloudfront infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack
+            aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack --region us-west-2
 
   backend-infrastructure:
     docker:
@@ -121,7 +121,7 @@ jobs:
           name: Ensure backend infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
 
   frontend-infrastructure:
     docker:
@@ -132,33 +132,34 @@ jobs:
           name: Ensure frontend infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack
+            aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
 
 workflows:
   default:
     jobs:
       - hello-world
-      - build-frontend:
-          requires:
-            - hello-world
-      - build-backend:
-          requires:
-            - build-frontend
-      - test-frontend:
-          requires:
-            - build-backend
-      - test-backend:
-          requires:
-            - test-frontend
-      - frontend-security:
-          requires:
-            - test-backend
-      - backend-security:
-          requires:
-            - frontend-security
-      - network-infrastructure:
-          requires:
-            - backend-security
+#      - build-frontend:
+ #         requires:
+  #          - hello-world
+   #   - build-backend:
+    #      requires:
+     #       - build-frontend
+      #- test-frontend:
+       #   requires:
+        #    - build-backend
+#      - test-backend:
+ #         requires:
+  #          - test-frontend
+   #   - frontend-security:
+    #      requires:
+     #       - test-backend
+      #- backend-security:
+       #   requires:
+        #    - frontend-security
+      #- network-infrastructure:
+       #   requires:
+        #    - backend-security
+      - network-infrastructure
       - cloudfront-infrastructure:
           requires:
             - network-infrastructure
