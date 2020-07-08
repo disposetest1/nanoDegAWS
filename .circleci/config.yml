@@ -72,14 +72,14 @@ workflows:
     jobs:
       - hello-world
       - build-frontend
-      - build-backend
-      - test-frontend:
+      - build-backend:
           requires:
             - build-frontend
+      - test-frontend:
+          requires:
             - build-backend
       - test-backend:
           requires:
-            - build-frontend
-            - build-backend
+            - test-frontend
 
             
