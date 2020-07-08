@@ -98,7 +98,7 @@ jobs:
       - run:
           name: Ensure network infrastructure exist
           command: |
-            cd ./files
+            cd ./.circleci/files
             aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack
             
   cloudfront-infrastructure:
@@ -109,7 +109,7 @@ jobs:
       - run:
           name: Ensure cloudfront infrastructure exist
           command: |
-            cd ./files
+            cd ./.circleci/files
             aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack
 
   backend-infrastructure:
@@ -120,7 +120,7 @@ jobs:
       - run:
           name: Ensure backend infrastructure exist
           command: |
-            cd ./files
+            cd ./.circleci/files
             aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack
 
   frontend-infrastructure:
@@ -131,7 +131,7 @@ jobs:
       - run:
           name: Ensure frontend infrastructure exist
           command: |
-            cd ./files
+            cd ./.circleci/files
             aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack
 
 workflows:
