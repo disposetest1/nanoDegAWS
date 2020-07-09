@@ -101,7 +101,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ensure network infrastructure exist
+          name: Setup network infrastructure
           command: |
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack --region us-west-2
@@ -112,7 +112,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ensure cloudfront infrastructure exist
+          name: Setup cloudfront infrastructure
           command: |
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack --region us-west-2
@@ -123,7 +123,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ensure backend infrastructure exist
+          name: Setup backend infrastructure
           command: |
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
@@ -134,7 +134,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ensure frontend infrastructure exist
+          name: Setup frontend infrastructure
           command: |
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
@@ -165,14 +165,16 @@ workflows:
        #   requires:
         #    - backend-security
       - network-infrastructure
-      - cloudfront-infrastructure:
+      - frontend-infrastructure:
           requires:
             - network-infrastructure
       - backend-infrastructure:
           requires:
-            - cloudfront-infrastructure
-      - frontend-infrastructure:
+            - frontend-infrastructure
+      - cloudfront-infrastructure:
           requires:
             - backend-infrastructure
+      
+      
 
             
