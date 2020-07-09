@@ -5,6 +5,7 @@ Parameters:
   WorkflowID:
     Description: Unique identifier.
     Type: String
+    Default: nanoDegWorkflow
 
 
 Resources:
