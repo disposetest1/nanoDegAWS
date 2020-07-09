@@ -168,9 +168,6 @@ workflows:
       - cloudfront-infrastructure:
           requires:
             - network-infrastructure
-          environment:
-            EnvironmentName: << pipeline.parameters.environment >>
-
       - backend-infrastructure:
           requires:
             - cloudfront-infrastructure
