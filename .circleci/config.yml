@@ -164,7 +164,7 @@ workflows:
       - network-infrastructure:
           requires:
             - backend-security
-      - network-infrastructure
+      #- network-infrastructure
       - frontend-infrastructure:
           requires:
             - network-infrastructure
