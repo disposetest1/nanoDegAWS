@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  environment:
+    type: string
+    default: "nanoDeg"
+
 jobs:
   hello-world:
     docker:
@@ -163,6 +168,9 @@ workflows:
       - cloudfront-infrastructure:
           requires:
             - network-infrastructure
+          environment:
+            EnvironmentName: << pipeline.parameters.environment >>
+
       - backend-infrastructure:
           requires:
             - cloudfront-infrastructure
