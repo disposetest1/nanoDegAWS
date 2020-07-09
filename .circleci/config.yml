@@ -104,7 +104,7 @@ jobs:
           name: Ensure network infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack --region us-west-2
+            aws cloudformation deploy --template-file ./network.yml --stack-name nanoDegNetworkStack --region us-west-2 --on-failure DELETE
             
   cloudfront-infrastructure:
     docker:
@@ -115,7 +115,7 @@ jobs:
           name: Ensure cloudfront infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack --region us-west-2
+            aws cloudformation deploy --template-file ./cloudfront.yml --stack-name nanoDegCloudfrontStack --region us-west-2 --on-failure DELETE
 
   backend-infrastructure:
     docker:
@@ -126,7 +126,7 @@ jobs:
           name: Ensure backend infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2 --on-failure DELETE
 
   frontend-infrastructure:
     docker:
@@ -137,7 +137,7 @@ jobs:
           name: Ensure frontend infrastructure exist
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
+            aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2 --on-failure DELETE
 
 workflows:
   default:
