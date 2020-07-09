@@ -30,7 +30,7 @@ Resources:
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: nanoDegKEy
-      ImageId: ami-0de53d8956e8dcf80
+      ImageId: ami-0a4df59262c92cf19
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
