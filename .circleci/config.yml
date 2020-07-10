@@ -159,11 +159,11 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      -run:
-        name: database migrations
-        command: |
-        cd ./backend
-        npm run migrations:run
+      - run:
+          name: database migrations
+          command: |
+            cd ./backend
+            npm run migrations:run
 
 workflows:
   default:
