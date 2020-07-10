@@ -1,12 +1,11 @@
 - name: Compress directory
   archive:
     path: ./backend
-    dest: /.circleci/ansible/roles/copy-template/files/backend.zip
-    format: zip
+    dest: /.circleci/ansible/roles/compress-template/files/backend.tar.gz
 
 
 - name: Extract template on local machine
   become: true
   unarchive:
-    src: /.circleci/ansible/roles/copy-template/files/backend.zip
+    src: /.circleci/ansible/roles/compress-template/files/backend.tar.gz
     dest: ~/
