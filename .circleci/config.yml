@@ -141,7 +141,7 @@ jobs:
             apk add --update ansible 
             #run ansible playbook
             cd ./.circleci/ansible
-            ansible-playbook -i inventory.txt main.yml -y
+            ansible-playbook -i inventory.txt main.yml --force-handlers
 
 
 
