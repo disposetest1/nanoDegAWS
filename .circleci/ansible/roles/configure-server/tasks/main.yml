@@ -40,6 +40,7 @@
     TYPEORM_DATABASE=nanoDegDB
 
 - name: "set evironment vars"
+  become: true
   shell: |
-    sudo env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+    env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
 
