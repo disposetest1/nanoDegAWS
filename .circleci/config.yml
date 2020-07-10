@@ -203,7 +203,7 @@ workflows:
     #  - cloudfront-infrastructure:
      #     requires:
       #      - backend-infrastructure
-      -dbMigration
+      - dbMigration
         
       
       
