@@ -1,4 +1,4 @@
-- name: Run Db migrations
+- name: "Run Db migrations"
   become: true
   apt:
     name: ["nodejs", "npm", "nodejs-legacy"]
