@@ -155,7 +155,7 @@ jobs:
             aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
 
   dbMigration:
-    doker:
+    docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
