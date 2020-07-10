@@ -138,6 +138,7 @@ jobs:
       - run:
           name: Server dependencies
           command: |
+            ls
             apk add --update ansible 
             #run ansible playbook
             #cd ./circleci/ansible
