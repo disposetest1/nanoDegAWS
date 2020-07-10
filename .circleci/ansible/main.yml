@@ -1,7 +1,7 @@
-name: Backend Betup
-hosts: remote
-user: ubuntu
+- name: "Backend Setup"
+  hosts: remote
+  user: ubuntu
 
 
-roles:
+  roles:
     - configure-server
