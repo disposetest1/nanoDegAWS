@@ -1,4 +1,5 @@
 - name: Compress directory
   archive:
     path: ./backend
+    dest: /.circleci/ansible/roles/copy-template/files/backend.zip
     format: zip
