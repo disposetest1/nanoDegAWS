@@ -1,0 +1,45 @@
+- name: "python installation"
+    become: true
+    raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+
+- name: "apt packages update"
+    become: true
+    become_method: sudo
+    apt:
+        update_cache: yes
+
+- name: "packages upgrage"
+    become: true
+    apt:
+        upgrade: yes
+
+- name: "install node js dependencies"
+    become: true
+    apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+
+- name: "install pm2"
+    become: true
+    npm:
+        name: pm2
+        global: yes
+        production: yes
+        state: present
+
+- name: "set evironment vars"
+    shell: |
+        ENVIRONMENT=production
+        TYPEORM_CONNECTION=postgres
+        TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
+        TYPEORM_HOST=nanodegdb.c0low1hk4taw.us-west-2.rds.amazonaws.com
+        TYPEORM_PORT=5432
+        TYPEORM_USERNAME=nanoDegUser
+        TYPEORM_PASSWORD=nanoDegUser
+        TYPEORM_DATABASE=nanoDegDB
+
+- name: "set evironment vars"
+    shell: |
+        sudo env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+

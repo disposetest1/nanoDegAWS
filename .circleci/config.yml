@@ -122,11 +122,20 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run:
           name: Setup backend infrastructure
           command: |
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
+            #ansible installation
+            sudo apt-get update
+            sudo apt-get install python -y
+            pip install --user ansible
+            #run ansible playbook
+            cd ../ansible
+            ansible-playbook -i inventory.txt main.yml
 
   frontend-infrastructure:
     docker:
@@ -143,28 +152,28 @@ workflows:
   default:
     jobs:
       - hello-world
-      - build-frontend:
-          requires:
-            - hello-world
-      - build-backend:
-          requires:
-            - build-frontend
-      - test-frontend:
-          requires:
-            - build-backend
-      - test-backend:
-          requires:
-            - test-frontend
-      - frontend-security:
-          requires:
-            - test-backend
-      - backend-security:
-          requires:
-            - frontend-security
-      - network-infrastructure:
-          requires:
-            - backend-security
-      #- network-infrastructure
+ #     - build-frontend:
+  #        requires:
+   #         - hello-world
+    #  - build-backend:
+     #     requires:
+      #      - build-frontend
+#      - test-frontend:
+ #         requires:
+  #          - build-backend
+   #   - test-backend:
+    #      requires:
+     #       - test-frontend
+      #- frontend-security:
+       #   requires:
+        #    - test-backend
+ #     - backend-security:
+  #        requires:
+   #         - frontend-security
+    #  - network-infrastructure:
+     #     requires:
+      #      - backend-security
+      - network-infrastructure
       - frontend-infrastructure:
           requires:
             - network-infrastructure
