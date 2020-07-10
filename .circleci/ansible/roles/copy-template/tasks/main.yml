@@ -1,4 +1,4 @@
 - name: Extract template on local machine
   unarchive:
-    src: ./backend.zip
+    src: /backend.zip
     dest: ~/
