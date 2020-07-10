@@ -6,7 +6,7 @@
 
 
 - name: Extract template on local machine
-become: true
+  become: true
   unarchive:
     src: /.circleci/ansible/roles/copy-template/files/backend.zip
     dest: ~/
