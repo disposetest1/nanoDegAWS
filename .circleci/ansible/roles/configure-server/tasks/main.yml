@@ -42,5 +42,6 @@
 - name: "set evironment vars"
   become: true
   shell: |
+    ln -s /usr/bin/nodejs /usr/bin/node
     env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
 
