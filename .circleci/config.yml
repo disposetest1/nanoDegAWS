@@ -120,6 +120,7 @@ jobs:
   backend-infrastructure:
     docker:
       - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -128,14 +129,14 @@ jobs:
           name: Setup backend infrastructure
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
-            #ansible installation
-            sudo apt-get update
-            sudo apt-get install python -y
-            pip install --user ansible
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2 amazon/aws-cli
+      - run:
+          name: Server dependencies
+          command: |
+            apk add --update ansible python:3.7-alpine3.11
             #run ansible playbook
-            cd ../ansible
-            ansible-playbook -i inventory.txt main.yml
+            cd ./circleci/ansible
+            ansible-playbook -i inventory.txt main.yml python:3.7-alpine3.11
 
   frontend-infrastructure:
     docker:
