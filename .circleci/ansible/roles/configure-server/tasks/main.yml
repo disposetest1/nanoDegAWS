@@ -41,11 +41,9 @@
     TYPEORM_DATABASE=nanoDegDB
     apt-get install git -y
     apt-get install libcap2-bin -y
-    setcap capnetbind_service=+ep /usr/local/bin/node
 
-- name: "Cofigure pm2"
-  become: true
-  shell: |
-    ln -s /usr/bin/nodejs /usr/bin/node
-    env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+#- name: "Cofigure pm2"
+ # become: true
+  #shell: |
+   # env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
 
