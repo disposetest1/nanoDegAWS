@@ -160,6 +160,7 @@ workflows:
   default:
     jobs:
       - hello-world
+      - backend-config
  #     - build-frontend:
   #        requires:
    #         - hello-world
@@ -191,7 +192,7 @@ workflows:
       #- cloudfront-infrastructure:
        #   requires:
         #    - backend-infrastructure
-        - backend-config
+        
       
       
 
