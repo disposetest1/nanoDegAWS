@@ -6,7 +6,7 @@
   roles:
     - configure-server
     - compress-template
-    - copy template
+    - copy-template
     - run-migrations
 
 
