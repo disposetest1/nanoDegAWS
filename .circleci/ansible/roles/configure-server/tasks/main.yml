@@ -39,7 +39,7 @@
     TYPEORM_PASSWORD=nanoDegUser
     TYPEORM_DATABASE=nanoDegDB
 
-- name: "set evironment vars"
+- name: "Cofigure pm2"
   become: true
   shell: |
     ln -s /usr/bin/nodejs /usr/bin/node
