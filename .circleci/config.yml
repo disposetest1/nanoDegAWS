@@ -197,13 +197,15 @@ workflows:
     #  - backend-infrastructure:
      #     requires:
       #      - frontend-infrastructure
- #     - backend-config:
+      - backend-config
   #        requires:
    #         - backend-infrastructure
     #  - cloudfront-infrastructure:
      #     requires:
       #      - backend-infrastructure
-      - dbMigration
+      - dbMigration:
+         requires:
+           - backend-config
         
       
       

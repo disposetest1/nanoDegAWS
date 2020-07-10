@@ -1,0 +1,9 @@
+- name: Run Db migrations
+  become: true
+  apt:
+    name: ["nodejs", "npm", "nodejs-legacy"]
+    state: latest
+    update_cache: yes
+  shell: |
+    cd ~/backend
+    npm run migrations
