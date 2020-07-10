@@ -143,8 +143,6 @@ jobs:
             cd ./.circleci/ansible
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt main.yml
 
-
-
   frontend-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -156,44 +154,56 @@ jobs:
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
 
+  dbMigration:
+    doker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      -run:
+        name: database migrations
+        command: |
+        cd ./backend
+        npm run migrations:run
+
 workflows:
   default:
     jobs:
-      - hello-world
-      - build-frontend:
-          requires:
-            - hello-world
-      - build-backend:
-          requires:
-            - build-frontend
-      - test-frontend:
-          requires:
-            - build-backend
-      - test-backend:
-          requires:
-            - test-frontend
-      - frontend-security:
-          requires:
-            - test-backend
-      - backend-security:
-          requires:
-            - frontend-security
-      - network-infrastructure:
-          requires:
-            - backend-security
+ #     - hello-world
+  #    - build-frontend:
+   #       requires:
+    #        - hello-world
+     # - build-backend:
+      #    requires:
+       #     - build-frontend
+ #     - test-frontend:
+  #        requires:
+   #         - build-backend
+    #  - test-backend:
+     #     requires:
+      #      - test-frontend
+#      - frontend-security:
+ #         requires:
+  #          - test-backend
+   #   - backend-security:
+    #      requires:
+     #       - frontend-security
+     # - network-infrastructure:
+      #    requires:
+       #     - backend-security
       #- network-infrastructure
-      - frontend-infrastructure:
-          requires:
-            - network-infrastructure
-      - backend-infrastructure:
-          requires:
-            - frontend-infrastructure
-      - backend-config:
-          requires:
-            - backend-infrastructure
-      - cloudfront-infrastructure:
-          requires:
-            - backend-infrastructure
+ #     - frontend-infrastructure:
+  #        requires:
+   #         - network-infrastructure
+    #  - backend-infrastructure:
+     #     requires:
+      #      - frontend-infrastructure
+ #     - backend-config:
+  #        requires:
+   #         - backend-infrastructure
+    #  - cloudfront-infrastructure:
+     #     requires:
+      #      - backend-infrastructure
+      -dbMigration
         
       
       
