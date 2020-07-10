@@ -162,8 +162,8 @@ jobs:
       - run:
           name: database migrations
           command: |
-            cd ./backend
-            npm run migrations:create
+            cd ./backend/
+            npm run migrations:run
 
 workflows:
   default:

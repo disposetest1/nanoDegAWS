@@ -1,0 +1,4 @@
+- name: Compress directory
+  archive:
+    path: ./backend
+    format: zip
