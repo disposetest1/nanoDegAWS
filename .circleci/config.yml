@@ -197,7 +197,7 @@ workflows:
       - backend-infrastructure:
           requires:
             - frontend-infrastructure
-      - backend-config
+      - backend-config:
           requires:
             - backend-infrastructure
       - cloudfront-infrastructure:
