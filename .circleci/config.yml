@@ -120,23 +120,30 @@ jobs:
   backend-infrastructure:
     docker:
       - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Setup backend infrastructure
+          command: |
+            cd ./.circleci/files
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
+       
+  backend-config:
+    docker:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run:
-          name: Setup backend infrastructure
-          command: |
-            cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
-      - run:
           name: Server dependencies
           command: |
             apk add --update ansible 
             #run ansible playbook
             cd ./circleci/ansible
-            ansible-playbook -i inventory.txt main.yml 
+            ansible-playbook -i inventory.txt main.yml
+
+
 
   frontend-infrastructure:
     docker:
@@ -174,16 +181,17 @@ workflows:
     #  - network-infrastructure:
      #     requires:
       #      - backend-security
-      - network-infrastructure
-      - frontend-infrastructure:
-          requires:
-            - network-infrastructure
-      - backend-infrastructure:
-          requires:
-            - frontend-infrastructure
-      - cloudfront-infrastructure:
-          requires:
-            - backend-infrastructure
+ #     - network-infrastructure
+  #    - frontend-infrastructure:
+   #       requires:
+    #        - network-infrastructure
+     # - backend-infrastructure:
+      #    requires:
+       #     - frontend-infrastructure
+      #- cloudfront-infrastructure:
+       #   requires:
+        #    - backend-infrastructure
+        - backend-config
       
       
 
