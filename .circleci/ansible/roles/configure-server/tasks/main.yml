@@ -28,7 +28,8 @@
     production: yes
     state: present
 
-- name: "set evironment vars"
+- name: "set evironment vars and dependencies"
+  become: true
   shell: |
     ENVIRONMENT=production
     TYPEORM_CONNECTION=postgres
@@ -38,6 +39,9 @@
     TYPEORM_USERNAME=nanoDegUser
     TYPEORM_PASSWORD=nanoDegUser
     TYPEORM_DATABASE=nanoDegDB
+    apt-get install git -y
+    apt-get install libcap2-bin -y
+    setcap capnetbind_service=+ep /usr/local/bin/node
 
 - name: "Cofigure pm2"
   become: true
