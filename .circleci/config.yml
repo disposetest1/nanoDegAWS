@@ -171,38 +171,38 @@ workflows:
  #     - hello-world
   #    - build-frontend:
    #       requires:
-    #        - hello-world
-     # - build-backend:
-      #    requires:
-       #     - build-frontend
- #     - test-frontend:
-  #        requires:
-   #         - build-backend
-    #  - test-backend:
-     #     requires:
-      #      - test-frontend
-#      - frontend-security:
- #         requires:
-  #          - test-backend
-   #   - backend-security:
-    #      requires:
-     #       - frontend-security
-     # - network-infrastructure:
-      #    requires:
-       #     - backend-security
+            - hello-world
+      - build-backend:
+          requires:
+            - build-frontend
+      - test-frontend:
+          requires:
+            - build-backend
+      - test-backend:
+          requires:
+            - test-frontend
+      - frontend-security:
+          requires:
+            - test-backend
+      - backend-security:
+          requires:
+            - frontend-security
+      - network-infrastructure:
+          requires:
+            - backend-security
       #- network-infrastructure
- #     - frontend-infrastructure:
-  #        requires:
-   #         - network-infrastructure
-    #  - backend-infrastructure:
-     #     requires:
-      #      - frontend-infrastructure
+      - frontend-infrastructure:
+          requires:
+            - network-infrastructure
+      - backend-infrastructure:
+          requires:
+            - frontend-infrastructure
       - backend-config
-  #        requires:
-   #         - backend-infrastructure
-    #  - cloudfront-infrastructure:
-     #     requires:
-      #      - backend-infrastructure
+          requires:
+            - backend-infrastructure
+      - cloudfront-infrastructure:
+          requires:
+            - backend-infrastructure
       - dbMigration:
          requires:
            - backend-config
