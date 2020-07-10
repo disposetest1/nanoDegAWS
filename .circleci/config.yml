@@ -141,7 +141,7 @@ jobs:
             apk add --update ansible 
             #run ansible playbook
             cd ./.circleci/ansible
-            ansible-playbook -i inventory.txt main.yml
+            ansible-playbook -i inventory.txt main.yml -y
 
 
 
