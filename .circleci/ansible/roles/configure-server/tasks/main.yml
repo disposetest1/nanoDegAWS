@@ -16,7 +16,7 @@
 - name: "install node js dependencies"
   become: true
   apt:
-    name: ["nodejs", "npm"]
+    name: ["nodejs", "npm", "nodejs-legacy"]
     state: latest
     update_cache: yes
 
@@ -42,6 +42,5 @@
 - name: "set evironment vars"
   become: true
   shell: |
-    ls
     env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
 
