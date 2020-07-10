@@ -1,4 +1,0 @@
-- name: Extract template on local machine
-  unarchive:
-    src: /.circleci/ansible/roles/copy-template/files/backend.zip.zip
-    dest: ~/
