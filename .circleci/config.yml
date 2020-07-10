@@ -168,9 +168,9 @@ jobs:
 workflows:
   default:
     jobs:
- #     - hello-world
-  #    - build-frontend:
-   #       requires:
+      - hello-world
+      - build-frontend:
+         requires:
             - hello-world
       - build-backend:
           requires:
