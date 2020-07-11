@@ -49,10 +49,10 @@
     production: yes
     state: present
 
-- name: "Cofigure pm2"
-  become: true
-  shell: |
-      env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+#- name: "Cofigure pm2"
+ # become: true
+  #shell: |
+   #   env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
   
 
 - name: "set evironment vars and dependencies"
@@ -69,10 +69,6 @@
     apt-get install libcap2-bin -y
 
 
-- name: "Cofigure pm2"
-  become: true
-  shell: |
-   # env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
 
 
 
