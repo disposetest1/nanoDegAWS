@@ -8,5 +8,5 @@
 - name: Extract directory on ec2 instance
   become: true
   unarchive:
-    src: ./roles/copy-backend/files/backend.tar.gz
+    src: backend.tar.gz
     dest: /home/ubuntu
