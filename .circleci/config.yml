@@ -251,8 +251,8 @@ jobs:
               else
               return 0
               fi
-      - delete-stack
-        when: on_fail
+      - delete-stack:
+          when: on_fail
     
   production-frontend:
     docker:
