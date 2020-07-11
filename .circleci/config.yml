@@ -296,7 +296,7 @@ workflows:
             - backend-config   
       - deploy-frontend:
           requires:
-            - rebuild-backend
+            - deploy-backend
       - smoketests:
           requires:
             - deploy-frontend
