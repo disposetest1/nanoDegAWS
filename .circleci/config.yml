@@ -5,15 +5,6 @@ parameters:
     type: string
     default: "nanoDeg"
 
-commands:
-  delete_stack:
-    steps:
-      - run:
-          name: Delete a stack
-           aws cloudformation delete-stack --stack-name nanoDegBackendStack
-            npm run migrations:revert
-      - run: return 1
-
 jobs:
   hello-world:
     docker:
