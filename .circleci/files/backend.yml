@@ -5,7 +5,7 @@ Parameters:
   ID:
     Description: Unique identifier.
     Type: String
-    Default: nanoDegback2
+    Default: nanoDegback
 
 Resources:
   InstanceSecurityGroup:

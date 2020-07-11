@@ -1,12 +1,12 @@
 
 - name: Compress directory
   archive:
-    path: ./backend
-    dest: /.circleci/ansible/roles/compress-template/files/backend.tar.gz
+    path: ../../backend
+    dest: ./roles/copy-backend/files/backend.tar.gz
 
 
-- name: Extract template on local machine
+- name: Extract directory on ec2 instance
   become: true
   unarchive:
-    src: /.circleci/ansible/roles/compress-template/files/backend.tar.gz
-    dest: ~/
+    src: ./roles/copy-backend/files/backend.tar.gz
+    dest: /home/ubuntu

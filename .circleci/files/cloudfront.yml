@@ -5,7 +5,7 @@ Parameters:
   WorkflowID:
     Description: Unique identifier.
     Type: String
-    Default: nanodegfront2
+    Default: nanodegfront
 
 
 Resources:
