@@ -190,10 +190,10 @@ jobs:
       - run:
            name: Server dependencies
            command: |
-           apk add --update ansible 
-           #run ansible playbook
-           cd ./.circleci/ansible
-           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
+              apk add --update ansible 
+              #run ansible playbook
+              cd ./.circleci/ansible
+              ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
 
   #Rebuild frontend files
   rebuild-frontend:
