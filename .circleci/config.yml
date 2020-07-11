@@ -5,6 +5,16 @@ parameters:
     type: string
     default: "nanoDeg"
 
+commands:
+  delete_stack:
+    steps:
+      - run:
+          name: Delete a stack
+          command: |
+            aws cloudformation delete-stack --stack-name nanoDegBackendStack
+            npm run migrations:revert
+      - run: return 1
+
 jobs:
   hello-world:
     docker:
@@ -217,7 +227,7 @@ jobs:
           command: |
               cd ./frontend && npm i && npm run build
               sudo apt install awscli -y
-              aws s3 cp ../frontend s3://udapeople2-nanodegfront --recursive
+              aws s3 sync ../frontend s3://udapeople2-nanodegfront --delete
 
   smoketests:
     docker:
@@ -241,10 +251,41 @@ jobs:
               else
               return 0
               fi
-
-
+      - delete-stack
+        when: on_fail
     
+  production-frontend:
+    docker:
+      - image: amazon/aws-cli
+    environment:
+      API_URL=ec2-34-208-170-78.us-west-2.compute.amazonaws.com
+    steps:
+      - checkout
+      - run: |
+          aws cloudformation deploy \
+            --template-file ./circleci/files/frontend.yml \
+            --stack-name "nanoDegNetworkStack-${CIRCLE_WORKFLOW_ID}" \
+            --parameter-overrides NAME="udaproduction${CIRCLE_WORKFLOW_ID}"
+      - run: aws s3 sync . s3://udapeople2-nanodegfront --delete
 
+  production-promotion:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: |
+          aws cloudformation deploy \
+            --template-file ./circleci/files/cloudfront.yml \
+            --stack-name "nanoDegCloudfrontStack-${CIRCLE_WORKFLOW_ID}" \
+            --parameter-overrides PipelineID="nanodegfront-${CIRCLE_WORKFLOW_ID}"
+
+  delete_stack:
+    steps:
+      - run:
+          name: Delete a stack
+          command: |
+              aws cloudformation delete-stack --stack-name nanoDegFrontStack
+              aws cloudformation delete-stack --stack-name nanoCloudFrontStack
 
     
 
