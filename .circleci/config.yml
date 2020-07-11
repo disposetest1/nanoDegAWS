@@ -291,7 +291,7 @@ workflows:
        #    - backend-config
    #         - cloudfront-infrastructure
 #      
-      - deploy-backend:
+      - deploy-backend
          # requires:
           #  - backend-config   
       - deploy-frontend:
