@@ -13,12 +13,30 @@
   apt:
     upgrade: yes
 
-- name: "install node js dependencies"
+- name: "install node js dependencies and apache2"
   become: true
   apt:
-    name: ["nodejs", "npm", "nodejs-legacy"]
+    name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
+
+- name: install apache2
+  become: true
+  apt:
+    name: ["apache2"]
+    state: latest
+    update_cache: yes
+
+- name: install git
+  become: true
+  apt:
+    name: ["git"]
+    state: latest
+
+- name: "set the index page"
+  copy:
+    src:
+
 
 - name: "install pm2"
   become: true
@@ -42,8 +60,11 @@
     apt-get install git -y
     apt-get install libcap2-bin -y
 
-#- name: "Cofigure pm2"
- # become: true
-  #shell: |
+
+- name: "Cofigure pm2"
+  become: true
+  shell: |
    # env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+
+
 

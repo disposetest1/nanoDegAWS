@@ -126,7 +126,7 @@ jobs:
           name: Setup backend infrastructure
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-east-2
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
        
   
 
@@ -208,6 +208,9 @@ jobs:
           command: |
               cd ./frontend && npm i && npm run build
 
+  #Copy frontend files to s3 bucket
+
+
     
 
 
@@ -217,29 +220,29 @@ jobs:
 workflows:
   default:
     jobs:
-      - hello-world
-      - build-frontend:
-         requires:
-            - hello-world
-      - build-backend:
-          requires:
-            - build-frontend
-      - test-frontend:
-          requires:
-            - build-backend
-      - test-backend:
-          requires:
-            - test-frontend
-      - frontend-security:
-          requires:
-            - test-backend
-      - backend-security:
-          requires:
-            - frontend-security
-      - network-infrastructure:
-          requires:
-            - backend-security
-      #- network-infrastructure
+#      - hello-world
+ #     - build-frontend:
+  #       requires:
+   #         - hello-world
+    #  - build-backend:
+     #     requires:
+      #      - build-frontend
+#      - test-frontend:
+ #         requires:
+  #          - build-backend
+   #   - test-backend:
+    #      requires:
+     #       - test-frontend
+      #- frontend-security:
+#          requires:
+ #           - test-backend
+  #    - backend-security:
+   #       requires:
+    #        - frontend-security
+     # - network-infrastructure:
+      #    requires:
+       #     - backend-security
+      - network-infrastructure
       - frontend-infrastructure:
           requires:
             - network-infrastructure
@@ -255,16 +258,16 @@ workflows:
      # - dbMigration:
       #   requires:
        #    - backend-config
-      - rebuild-backend:
-          requires:
-            - backend-config
-            - cloudfront-infrastructure
-      - copy-backend:
-          requires:
-            - rebuild-backend
-      - rebuild-frontend:
-          requires:
-            - rebuild-backend
+#      - rebuild-backend:
+ #         requires:
+  #          - backend-config
+   #         - cloudfront-infrastructure
+    #  - copy-backend:
+     #     requires:
+      #      - rebuild-backend
+#      - rebuild-frontend:
+ #         requires:
+  #          - rebuild-backend
         
       
       
