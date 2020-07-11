@@ -180,7 +180,7 @@ jobs:
           name: Rebuild and deploy baceknd
           command: |
               cd ./backend && npm i && npm run build
-              sudo apt -y update && apt install -y python3
+              sudo apt -y update && sudo apt install -y python3
               pip install --user ansible
               cd ../.circleci/ansible
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
