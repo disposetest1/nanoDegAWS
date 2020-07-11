@@ -1,5 +1,5 @@
 - name: "Backend Setup"
-  hosts: localhost
+  hosts: remote
   user: ubuntu
 
 

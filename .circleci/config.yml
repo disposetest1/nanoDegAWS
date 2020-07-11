@@ -168,47 +168,57 @@ jobs:
             cd ./backend && npm i
             npm run migrations-win
   
-  #ReBuild backend
-  rebuild-backend:
+  #ReBuild and copy backend files to ec2
+  deploy-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run: 
           name: Rebuild baceknd
           command: |
               cd ./backend && npm i && npm run build
-
-  #Deploy backend files
-  copy-backend:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-           fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
-      - run:
-           name: Server dependencies
-           command: |
-              apk add --update ansible 
-              #run ansible playbook
-              cd ./.circleci/ansible
+              apt -y update && apt install -y python3
+              pip install --user ansible
+              cd ../.circleci/ansible
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
 
-  #Rebuild frontend files
-  rebuild-frontend:
+  #Deploy backend files
+  #copy-backend:
+   # docker:
+    #  - image: python:3.7-alpine3.11
+#    steps:
+ #     - checkout
+  #    - add_ssh_keys:
+   #        fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
+    #  - run:
+     #      name: Server dependencies
+      #     command: |
+       #       apk add --update ansible 
+        #      #run ansible playbook
+         #     cd ./.circleci/ansible
+          #    ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
+
+  #Rebuild and frontend files to s3bucket
+  deploy-frontend:
     docker:
       - image: circleci/node:13.8.0
     environment:
-      API_URL=ec2-54-185-65-72.us-west-2.compute.amazonaws.com
+      API_URL=ec2-34-208-170-78.us-west-2.compute.amazonaws.com
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run:
           name: Rebuild frontend
           command: |
               cd ./frontend && npm i && npm run build
+              apt install awscli -y
+              aws s3 cp ../frontend s3://udapeople2-nanodegfront --recursive
 
-  #Copy frontend files to s3 bucket
+  
 
 
     
@@ -242,30 +252,27 @@ workflows:
      # - network-infrastructure:
       #    requires:
        #     - backend-security
-      - network-infrastructure
-      - frontend-infrastructure:
-          requires:
-            - network-infrastructure
-      - backend-infrastructure:
-          requires:
-            - frontend-infrastructure
-      - cloudfront-infrastructure:
-          requires:
-            - backend-infrastructure
+#      - network-infrastructure
+ #     - frontend-infrastructure:
+  #        requires:
+   #         - network-infrastructure
+      - backend-infrastructure
+     #     requires:
+      #      - frontend-infrastructure
+#      - cloudfront-infrastructure:
+ #         requires:
+  #          - backend-infrastructure
       - backend-config:
           requires:
             - backend-infrastructure
      # - dbMigration:
       #   requires:
        #    - backend-config
-#      - rebuild-backend:
- #         requires:
-  #          - backend-config
+      - deploy-backend:
+          requires:
+            - backend-config
    #         - cloudfront-infrastructure
-    #  - copy-backend:
-     #     requires:
-      #      - rebuild-backend
-#      - rebuild-frontend:
+#      - deploy-frontend:
  #         requires:
   #          - rebuild-backend
         

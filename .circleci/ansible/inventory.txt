@@ -1,2 +1,2 @@
 [remote]
-ec2-54-185-65-72.us-west-2.compute.amazonaws.com
+ec2-34-208-170-78.us-west-2.compute.amazonaws.com
