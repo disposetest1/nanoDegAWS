@@ -177,7 +177,7 @@ jobs:
       - run: 
           name: Rebuild baceknd
           command: |
-          cd ./backend && npm i && npm run build
+              cd ./backend && npm i && npm run build
 
   #Deploy backend files
   copy-backend:
