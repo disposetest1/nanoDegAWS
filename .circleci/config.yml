@@ -302,10 +302,10 @@ workflows:
       - backend-config:
           requires:
             - backend-infrastructure
-      - dbMigration:
-         requires:
-           - backend-config
-            - cloudfront-infrastructure
+      #- dbMigration:
+       #  requires:
+        #   - backend-config
+         #   - cloudfront-infrastructure
       
       - deploy-backend:
           requires:
