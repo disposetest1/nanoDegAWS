@@ -196,22 +196,7 @@ jobs:
               cd ../.circleci/ansible
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
 
-  #Deploy backend files
-  #copy-backend:
-   # docker:
-    #  - image: python:3.7-alpine3.11
-#    steps:
- #     - checkout
-  #    - add_ssh_keys:
-   #        fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
-    #  - run:
-     #      name: Server dependencies
-      #     command: |
-       #       apk add --update ansible 
-        #      #run ansible playbook
-         #     cd ./.circleci/ansible
-          #    ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
-
+ 
   #Rebuild and frontend files to s3bucket
   deploy-frontend:
     docker:
@@ -251,8 +236,8 @@ jobs:
               else
               return 0
               fi
-      - delete-stack
-        when: on_fail
+      #- delete-stack
+       # when: on_fail
     
   production-frontend:
     docker:
@@ -293,49 +278,49 @@ jobs:
 workflows:
   default:
     jobs:
-#      - hello-world
- #     - build-frontend:
-  #       requires:
-   #         - hello-world
-    #  - build-backend:
-     #     requires:
-      #      - build-frontend
-#      - test-frontend:
- #         requires:
-  #          - build-backend
-   #   - test-backend:
-    #      requires:
-     #       - test-frontend
-      #- frontend-security:
-#          requires:
- #           - test-backend
-  #    - backend-security:
-   #       requires:
-    #        - frontend-security
-     # - network-infrastructure:
-      #    requires:
-       #     - backend-security
-#      - network-infrastructure
- #     - frontend-infrastructure:
-  #        requires:
-   #         - network-infrastructure
-      #- backend-infrastructure:
-     #     requires:
-      #      - frontend-infrastructure
-#      - cloudfront-infrastructure:
- #         requires:
-  #          - backend-infrastructure
-      #- backend-config:
-     #     requires:
-     #       - backend-infrastructure
-     # - dbMigration:
-      #   requires:
-       #    - backend-config
-   #         - cloudfront-infrastructure
-#      
-      - deploy-backend
-         # requires:
-          #  - backend-config   
+      - hello-world
+      - build-frontend:
+         requires:
+            - hello-world
+      - build-backend:
+          requires:
+            - build-frontend
+      - test-frontend:
+          requires:
+            - build-backend
+      - test-backend:
+          requires:
+            - test-frontend
+      - frontend-security:
+          requires:
+            - test-backend
+      - backend-security:
+          requires:
+            - frontend-security
+      - network-infrastructure:
+          requires:
+            - backend-security
+      - network-infrastructure
+      - frontend-infrastructure:
+          requires:
+            - network-infrastructure
+      - backend-infrastructure:
+          requires:
+            - frontend-infrastructure
+      - cloudfront-infrastructure:
+          requires:
+            - backend-infrastructure
+      - backend-config:
+          requires:
+            - backend-infrastructure
+      - dbMigration:
+         requires:
+           - backend-config
+            - cloudfront-infrastructure
+      
+      - deploy-backend:
+          requires:
+            - backend-config   
       - deploy-frontend:
           requires:
             - deploy-backend
