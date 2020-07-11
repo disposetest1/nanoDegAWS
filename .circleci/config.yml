@@ -177,10 +177,10 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run: 
-          name: Rebuild baceknd
+          name: Rebuild and deploy baceknd
           command: |
               cd ./backend && npm i && npm run build
-              apt -y update && apt install -y python3
+              sudo apt -y update && apt install -y python3
               pip install --user ansible
               cd ../.circleci/ansible
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
@@ -215,7 +215,7 @@ jobs:
           name: Rebuild and deploy frontend
           command: |
               cd ./frontend && npm i && npm run build
-              apt install awscli -y
+              sudo apt install awscli -y
               aws s3 cp ../frontend s3://udapeople2-nanodegfront --recursive
 
   smoketests:
@@ -283,7 +283,7 @@ workflows:
 #      - cloudfront-infrastructure:
  #         requires:
   #          - backend-infrastructure
-      - backend-config
+      #- backend-config:
      #     requires:
      #       - backend-infrastructure
      # - dbMigration:
@@ -292,8 +292,8 @@ workflows:
    #         - cloudfront-infrastructure
 #      
       - deploy-backend:
-          requires:
-            - backend-config   
+         # requires:
+          #  - backend-config   
       - deploy-frontend:
           requires:
             - deploy-backend
