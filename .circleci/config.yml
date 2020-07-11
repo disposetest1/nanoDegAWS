@@ -291,15 +291,15 @@ workflows:
        #    - backend-config
    #         - cloudfront-infrastructure
 #      
-     - deploy-backend:
-         requires:
-           - backend-config   
-     - deploy-frontend:
-         requires:
-           - rebuild-backend
-     - smoketests:
-         requires:
-           - deploy-frontend
+      - deploy-backend:
+          requires:
+            - backend-config   
+      - deploy-frontend:
+          requires:
+            - rebuild-backend
+      - smoketests:
+          requires:
+            - deploy-frontend
       
 
             
