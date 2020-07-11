@@ -212,13 +212,34 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
       - run:
-          name: Rebuild frontend
+          name: Rebuild and deploy frontend
           command: |
               cd ./frontend && npm i && npm run build
               apt install awscli -y
               aws s3 cp ../frontend s3://udapeople2-nanodegfront --recursive
 
-  
+  smoketests:
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run:
+          name: run smoke test on backend and frontend
+          command: |
+              #Test backend
+              BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+              curl "http://${BACKEND_IP}:3030/api/status"
+              #Frontend Test
+              URL="http://udapeople2-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com/#/employees"            
+              if curl -s ${URL} | grep "Welcome"
+              then
+              return 1
+              else
+              return 0
+              fi
 
 
     
@@ -256,27 +277,29 @@ workflows:
  #     - frontend-infrastructure:
   #        requires:
    #         - network-infrastructure
-      - backend-infrastructure
+      #- backend-infrastructure:
      #     requires:
       #      - frontend-infrastructure
 #      - cloudfront-infrastructure:
  #         requires:
   #          - backend-infrastructure
-      - backend-config:
-          requires:
-            - backend-infrastructure
+      - backend-config
+     #     requires:
+     #       - backend-infrastructure
      # - dbMigration:
       #   requires:
        #    - backend-config
-      - deploy-backend:
-          requires:
-            - backend-config
    #         - cloudfront-infrastructure
-#      - deploy-frontend:
- #         requires:
-  #          - rebuild-backend
-        
-      
+#      
+     - deploy-backend:
+         requires:
+           - backend-config   
+     - deploy-frontend:
+         requires:
+           - rebuild-backend
+     - smoketests:
+         requires:
+           - deploy-frontend
       
 
             

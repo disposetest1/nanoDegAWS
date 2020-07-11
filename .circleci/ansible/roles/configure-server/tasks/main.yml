@@ -35,7 +35,9 @@
 
 - name: "set the index page"
   copy:
-    src:
+    src: index.html
+    dest: /var/www/html/index.html
+    backup: yes
 
 
 - name: "install pm2"
@@ -45,6 +47,12 @@
     global: yes
     production: yes
     state: present
+
+- name: "Cofigure pm2"
+  become: true
+  shell: |
+      env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
+  
 
 - name: "set evironment vars and dependencies"
   become: true
@@ -57,7 +65,6 @@
     TYPEORM_USERNAME=nanoDegUser
     TYPEORM_PASSWORD=nanoDegUser
     TYPEORM_DATABASE=nanoDegDB
-    apt-get install git -y
     apt-get install libcap2-bin -y
 
 
