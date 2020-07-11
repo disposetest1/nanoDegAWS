@@ -1,17 +1,17 @@
 Description: >
-  UdaPeople backend stack.
+  UdaPeople backend stack 2.
 
 Parameters:
   ID:
     Description: Unique identifier.
     Type: String
-    Default: nanoDegback
+    Default: nanoDegback2
 
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub UdaPeople-${ID}
+      GroupName: !Sub UdaPeople2-${ID}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
