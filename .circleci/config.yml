@@ -181,6 +181,7 @@ jobs:
           command: |
               cd ./backend && npm i && npm run build
               sudo apt -y update && sudo apt install -y python3
+              sudo apt install python3-pip -y
               pip3 install --user ansible
               cd ../.circleci/ansible
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
