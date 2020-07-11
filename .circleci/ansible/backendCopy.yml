@@ -4,5 +4,5 @@
 
 
   roles:
-    - configure-server
+    - copy-backend
 

@@ -126,22 +126,9 @@ jobs:
           name: Setup backend infrastructure
           command: |
             cd ./.circleci/files
-            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-west-2
+            aws cloudformation deploy --template-file ./backend.yml --stack-name nanoDegBackendStack --region us-east-2
        
-  backend-config:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
-      - run:
-          name: Server dependencies
-          command: |
-            apk add --update ansible 
-            #run ansible playbook
-            cd ./.circleci/ansible
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt main.yml
+  
 
   frontend-infrastructure:
     docker:
@@ -154,6 +141,22 @@ jobs:
             cd ./.circleci/files
             aws cloudformation deploy --template-file ./frontend.yml --stack-name nanoDegFrontendStack --region us-west-2
 
+  backend-config:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
+      - run:
+          name: Server dependencies
+          command: |
+              apk add --update ansible 
+              #run ansible playbook
+              cd ./.circleci/ansible
+              ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt main.yml
+
+  #database migration
   dbMigration:
     docker:
       - image: circleci/node:13.8.0
@@ -164,48 +167,104 @@ jobs:
           command: |
             cd ./backend && npm i
             npm run migrations-win
+  
+  #ReBuild backend
+  rebuild-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: 
+          name: Rebuild baceknd
+          command: |
+          cd ./backend && npm i && npm run build
+
+  #Deploy backend files
+  copy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+           fingerprints: ["48:54:a0:b5:41:d3:4e:c2:0f:f8:b4:1e:8b:08:d5:35"]
+      - run:
+           name: Server dependencies
+           command: |
+           apk add --update ansible 
+           #run ansible playbook
+           cd ./.circleci/ansible
+           ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt backendCopy.yml
+
+  #Rebuild frontend files
+  rebuild-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    environment:
+      API_URL=ec2-54-185-65-72.us-west-2.compute.amazonaws.com
+    steps:
+      - checkout
+      - run:
+          name: Rebuild frontend
+          command: |
+              cd ./frontend && npm i && npm run build
+
+    
+
+
+    
+
 
 workflows:
   default:
     jobs:
-  #    - hello-world
-   #   - build-frontend:
-    #     requires:
-     #       - hello-world
-      #- build-backend:
-       #   requires:
-        #    - build-frontend
-#      - test-frontend:
- #         requires:
-  #          - build-backend
-   #   - test-backend:
-    #      requires:
-     #       - test-frontend
-      #- frontend-security:
-       #   requires:
-        #    - test-backend
-#      - backend-security:
- #         requires:
-  #          - frontend-security
-   #   - network-infrastructure:
-    #      requires:
-     #       - backend-security
-#      #- network-infrastructure
- #     - frontend-infrastructure:
-  #        requires:
-   #         - network-infrastructure
-    #  - backend-infrastructure:
-     #     requires:
-      #      - frontend-infrastructure
-      #- backend-config
- #         requires:
-#            - backend-infrastructure
- #     - cloudfront-infrastructure:
-  #        requires:
-   #         - backend-infrastructure
-      - dbMigration
-        # requires:
-         #  - backend-config
+      - hello-world
+      - build-frontend:
+         requires:
+            - hello-world
+      - build-backend:
+          requires:
+            - build-frontend
+      - test-frontend:
+          requires:
+            - build-backend
+      - test-backend:
+          requires:
+            - test-frontend
+      - frontend-security:
+          requires:
+            - test-backend
+      - backend-security:
+          requires:
+            - frontend-security
+      - network-infrastructure:
+          requires:
+            - backend-security
+      #- network-infrastructure
+      - frontend-infrastructure:
+          requires:
+            - network-infrastructure
+      - backend-infrastructure:
+          requires:
+            - frontend-infrastructure
+      - cloudfront-infrastructure:
+          requires:
+            - backend-infrastructure
+      - backend-config:
+          requires:
+            - backend-infrastructure
+     # - dbMigration:
+      #   requires:
+       #    - backend-config
+      - rebuild-backend:
+          requires:
+            - backend-config
+            - cloudfront-infrastructure
+      - copy-backend:
+          requires:
+            - rebuild-backend
+      - rebuild-frontend:
+          requires:
+            - rebuild-backend
         
       
       
