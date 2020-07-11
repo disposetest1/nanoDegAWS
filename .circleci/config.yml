@@ -5,14 +5,14 @@ parameters:
     type: string
     default: "nanoDeg"
 
-#commands:
- # delete_stack:
-  #  steps:
-   #   - run:
-    #      name: Delete a stack
-     ##      aws cloudformation delete-stack --stack-name nanoDegBackendStack
-       #     npm run migrations:revert
-      #- run: return 1
+commands:
+  delete_stack:
+    steps:
+      - run:
+          name: Delete a stack
+           aws cloudformation delete-stack --stack-name nanoDegBackendStack
+            npm run migrations:revert
+      - run: return 1
 
 jobs:
   hello-world:
@@ -263,7 +263,7 @@ jobs:
             --stack-name "nanoDegCloudfrontStack-${CIRCLE_WORKFLOW_ID}" \
             --parameter-overrides PipelineID="nanodegfront-${CIRCLE_WORKFLOW_ID}"
 
-  delete_stack:
+  clear_stack:
     steps:
       - run:
           name: Delete a stack
